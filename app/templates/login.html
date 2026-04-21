@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container d-flex justify-content-center mt-5">
+  <div class="card p-4" style="width:100%;max-width:430px;">
+    <h4 class="text-center mb-4 fw-bold"><i class="bi bi-box-arrow-in-right text-danger"></i> Login</h4>
+    <form method="POST">
+      <div class="mb-3">
+        <label class="form-label">Email Address</label>
+        <input type="email" name="email" class="form-control" placeholder="student@college.edu" required/>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Your password" required/>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+    <p class="text-center mt-3 mb-0">Don't have an account? <a href="/register" class="text-danger">Register</a></p>
+  </div>
+</div>
+{% endblock %}

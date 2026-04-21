@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h3 class="fw-bold mb-0"><i class="bi bi-people text-danger"></i> {{ event.title }}</h3>
+      <small class="text-muted"><i class="bi bi-calendar3"></i> {{ event.event_date }} &nbsp;|&nbsp;
+      <i class="bi bi-geo-alt"></i> {{ event.location }}</small>
+    </div>
+    <a href="/admin" class="btn btn-outline-danger"><i class="bi bi-arrow-left"></i> Back to Dashboard</a>
+  </div>
+
+  <div class="card mb-3 p-3 d-flex flex-row gap-4">
+    <div><span class="text-muted">Category:</span> <strong>{{ event.category }}</strong></div>
+    <div><span class="text-muted">Total Seats:</span> <strong>{{ event.seats }}</strong></div>
+    <div><span class="text-muted">Registered:</span> <strong class="text-success">{{ registrations|length }}</strong></div>
+  </div>
+
+  {% if registrations %}
+  <div class="card">
+    <div class="card-header bg-white fw-bold">
+      <i class="bi bi-list-check text-danger"></i> Registered Students ({{ registrations|length }})
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>College</th>
+              <th>Department</th>
+              <th>Year</th>
+              <th>Food</th>
+              <th>Registered On</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in registrations %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td class="fw-semibold">{{ r.name }}</td>
+              <td>{{ r.email }}</td>
+              <td>{{ r.phone }}</td>
+              <td>{{ r.college }}</td>
+              <td>{{ r.department }}</td>
+              <td>{{ r.year }}</td>
+              <td><span class="badge {% if r.food_pref == 'Veg' %}bg-success{% else %}bg-danger{% endif %}">{{ r.food_pref }}</span></td>
+              <td>{{ r.registered_at.strftime('%d %b %Y') }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="alert alert-warning">
+    <i class="bi bi-exclamation-circle"></i> No students have registered for this event yet.
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

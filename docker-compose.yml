@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+
+  # ── MySQL Database ─────────────────────────────────
+  db:
+    image: mysql:8.0
+    container_name: eventdb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: eventdb
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Flask Web App ──────────────────────────────────
+  web:
+    build: ./app
+    container_name: eventapp
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root123
+      MYSQL_DB: eventdb
+      SECRET_KEY: supersecretkey123
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:
